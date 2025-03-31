@@ -23,22 +23,24 @@ def read_files(filenames):
     df = pd.concat(dfs)
     return df
 
-def read_info_files():
-    df = read_files(INFO_FILES)
-    
+def read_info_files(input_dir):
+    filenames = [f"{input_dir}/{filename}" for filename in INFO_FILES]
+    df = read_files(filenames)
     df["published"] = pd.to_datetime(df["published"])
     df["year"] = df["published"].dt.year
 
     return df
 
-def read_keyword_files():
-    df = read_files(KEYWORD_FILES).set_index("id")
+def read_keyword_files(input_dir):
+    filenames = [f"{input_dir}/{filename}" for filename in KEYWORD_FILES]
+    df = read_files(filenames).set_index("id")
     return df != "NO"
     
     
-def read_keyword_lists():
+def read_keyword_lists(input_dir):
     keys = {}
-    with open(KEYWORD_FILE, "r") as f:
+    filename = f"{input_dir}/{KEYWORD_FILE}"
+    with open(filename, "r") as f:
         for line in f:
             fields = line.split(":")
             id_ = (fields[0] + ":" + fields[1]).strip()
