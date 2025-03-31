@@ -1,8 +1,18 @@
 import pandas as pd
-
+import yaml
 INFO_FILES = [f"{start}_{start+100}.csv" for start in range(0, 2000, 100)]
 KEYWORD_FILES = [f"keywords_{start}_{start+100}.csv" for start in range(0, 2000, 100)]
 KEYWORD_FILE = "keywords.txt"
+
+def get_config(filename, section=None):
+    with open(filename, "r") as f:
+        config = yaml.safe_load(f)
+    if section is None:
+        return config
+    else:
+        return config[section]
+
+    
 
 def read_files(filenames):
     dfs = []

@@ -2,10 +2,11 @@ import time
 import os
 import requests
 import feedparser
-import yaml
 
 import pandas as pd
 import click 
+
+from utils import get_config
 
 def search_arxiv(query="all:'neural architecture search'", max_results=2, start=0):
     base_url = "http://export.arxiv.org/api/query"
@@ -42,9 +43,8 @@ def search_arxiv(query="all:'neural architecture search'", max_results=2, start=
 @click.argument("config_file", default="config.yaml", type=click.Path(exists=True))
 def main(config_file):
 
-    with open(config_file, "r") as f:
-        config = yaml.safe_load(f)
-        config = config["download"] 
+    
+    config = get_config(config_file, section="download")
     
     query = config.get("query", "all: 'neural architecture search'")
     batch_size = config.get("batch_size", 100)
@@ -73,6 +73,7 @@ def main(config_file):
             break        
         else:
             print(f"Failed to retrieve data from arXiv. Skipping batch {start} - {start+batch_size}.")
+            time.sleep(sleep)
             continue
         
         df = pd.DataFrame(papers)
