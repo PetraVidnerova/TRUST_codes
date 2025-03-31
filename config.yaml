@@ -1,0 +1,22 @@
+download:
+  query: "all:'neural architecture search'"
+  batch_size: 100
+  sleep: 120
+  output_dir: "./data"
+  start: 0
+  end: 2000
+
+
+process:
+  keywords:
+    - "reinforcement learning"
+    - "evolutionary algorithms"
+    - "bayesian optimisation"
+    - "multi-objective optimisation"
+    - "supernet"
+    - "weight sharing"
+    - "differentiable optimisation or gradient based optimisation"
+    - "zero cost proxies or training free"
+    - "hardware aware search"
+    - "surrogate models"
+  output_dir: "./data/"
