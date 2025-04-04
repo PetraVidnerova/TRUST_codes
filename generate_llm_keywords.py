@@ -1,24 +1,26 @@
 import click
+import tqdm 
 import pandas as pd
 
 from interface import OllamaChat
 from utils import get_config
-from utils import INFO_FILES
+from utils import info_files
 
 
-def process_file(filename, forbidden_keyword, output_filename, client):
+def process_file(filename, forbidden_keyword, output_filename, client, verbose=False):
     df = pd.read_csv(filename)
     
-    for index, row in df.iterrows():
+    for index, row in tqdm.tqdm(df.iterrows(), total=len(df)):
         
         query = f"List  5 keywords from the following text:"
         query += f"\n{row['summary']}\n"
         query += f"Do not include the keyword '{forbidden_keyword}' in the list."
         query += f"Return only the keywords, comma separated, no other text."
         response = client.complete(query)
-       
-        print(index,":", response)
-        print()
+
+        if verbose:
+            print(index,":", response)
+            print()
 
         keywords = response.split(',')
         keywords = [keyword.strip().lower() for keyword in keywords]
@@ -29,7 +31,8 @@ def process_file(filename, forbidden_keyword, output_filename, client):
         
 @click.command()
 @click.argument("config_file", default="config.yaml", type=click.Path(exists=True))
-def main(config_file):
+@click.option("-v", "--verbose", default=False, is_flag=True)
+def main(config_file, verbose):
     
     config = get_config(config_file, section="process")
     
@@ -38,19 +41,20 @@ def main(config_file):
     input_dir = config.get("input_dir")
     output_dir = config.get("output_dir")
 
-    filenames = [f"{input_dir}/{filename}" for filename in INFO_FILES]
+    config_files = get_config(config_file, section="download")
+    start = config_files["start"]
+    end = config_files["end"]
+    batch = config_files["batch_size"]
+
+    filename = get_config(config_file, section="files")["info_filename"]
 
     client = OllamaChat()
-
-    for file in filenames:
-        print(f"Processing {file}.")
-        process_file(file,
-                     forbidden_keyword=forbidden_keyword,
-                     output_filename=f"{output_dir}/{output_file}",
-                     client=client
-                     )
-
-    print(f"Results saved to {output_dir}/{output_file}.")
+    print(f"Processing {input_dir}/{filename}.")
+    process_file(f"{input_dir}/{filename}",
+                 forbidden_keyword=forbidden_keyword,
+                 output_filename=f"{output_dir}/{output_file}",
+                 client=client
+            )
     
 
 if __name__ == "__main__":

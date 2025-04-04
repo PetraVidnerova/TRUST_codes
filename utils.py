@@ -11,6 +11,10 @@ def info_files(start, end, batchsize):
 def keyword_files(start, end, batchsize):
     return [f"keywords_{start}_{start+batchsize}.csv" for start in range(start, end, batchsize)]
 
+def filter_files(start, end, batchsize):
+    return [f"filter_{start}_{start+batchsize}.csv" for start in range(start, end, batchsize)]
+
+
 def get_config(filename, section=None):
     with open(filename, "r") as f:
         config = yaml.safe_load(f)
@@ -29,20 +33,26 @@ def read_files(filenames):
     df = pd.concat(dfs)
     return df
 
-def read_info_files(input_dir):
-    filenames = [f"{input_dir}/{filename}" for filename in INFO_FILES]
+def read_info_files(input_dir, start, end, batch_size):
+    filenames = [f"{input_dir}/{filename}" for filename in info_files(start, end, batch_size)]
     df = read_files(filenames)
     df["published"] = pd.to_datetime(df["published"])
     df["year"] = df["published"].dt.year
 
     return df
 
-def read_keyword_files(input_dir):
+def read_keyword_files(input_dir, start, end, batch_size):
     # todo: check if answers are really only YES, NO
-    filenames = [f"{input_dir}/{filename}" for filename in KEYWORD_FILES]
+    filenames = [f"{input_dir}/{filename}" for filename in keyword_files(start, end, batch_size)]
     df = read_files(filenames).set_index("id")
     return df != "NO"
-    
+
+def read_filter_files(input_dir, start, end, batch_size):
+    # todo: check if answers are really only YES, NO
+    filenames = [f"{input_dir}/{filename}" for filename in filter_files(start, end, batch_size)]
+    df = read_files(filenames).set_index("id")
+    return df != "NO"
+
     
 def read_keyword_lists(input_dir):
     keys = {}
