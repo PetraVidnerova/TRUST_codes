@@ -3,9 +3,15 @@ download:
   batch_size: 100
   sleep: 120
   output_dir: "./data"
+  pdf_dir: "./data/pdf"
   start: 0
   end: 2000
 
+alex:
+  output_dir: "./data"
+  id_table: "id2alex.csv"
+  references_file: "references.txt"
+  citations_file: "citations.txt"
 
 process:
   forbidden_keyword: "neural architecture search"
@@ -16,10 +22,31 @@ process:
     - "multi-objective optimisation"
     - "supernet"
     - "weight sharing"
-    - "differentiable optimisation or gradient based optimisation"
+    - "differentiable optimisation"
     - "zero cost proxies or training free"
     - "hardware aware search"
     - "surrogate models"
   input_dir: "./data"
   output_dir: "./data/"
   output_file: "keywords.txt"
+
+
+figures:
+  input_dir: "./data"
+  output_dir: "./figures"
+  key_names:
+      - "reinforcement learning"
+      - "evolutionary algorithms"
+      - "bayesian optimisation"
+      - "differentiable optimisation"
+  key_labels:
+      - "Reinforcement Learning"
+      - "Evolutionary Algorithms"
+      - "Bayesian Optimisation"
+      - "Differentiable Optimisation"
+  short_keys:
+      - "reinforcement"
+      - "evolutionary"
+      - "bayesian"
+      - "differentiable"
+  

@@ -13,7 +13,6 @@ def get_config(filename, section=None):
         return config[section]
 
     
-
 def read_files(filenames):
     dfs = []
     for file in filenames:
@@ -32,6 +31,7 @@ def read_info_files(input_dir):
     return df
 
 def read_keyword_files(input_dir):
+    # todo: check if answers are really only YES, NO
     filenames = [f"{input_dir}/{filename}" for filename in KEYWORD_FILES]
     df = read_files(filenames).set_index("id")
     return df != "NO"
@@ -47,3 +47,27 @@ def read_keyword_lists(input_dir):
             keywords = [keyword.strip().lower() for keyword in fields[2].split(",")]
             keys[id_] = set(keywords)
     return keys
+
+def read_id_table(filename):
+    df = pd.read_csv(filename, index_col=0)
+    return (
+        {row["id"]: row["alex_id"] for _, row in df.iterrows()},
+        {row["alex_id"]: row["id"] for _, row in df.iterrows()} 
+    )
+    
+def read_refs(filename):
+    refs = {}
+    with open(filename, "r") as f:
+        for line in f:
+            id_, fields = line.split(" : ")
+            fields = [field.strip() for field in fields.split(",")]
+            refs[id_] = fields
+    return refs
+    
+def clean_id(id):
+    arxiv_prefix = "http://arxiv.org/abs/"
+    alex_prefix = "http://export.arxiv.org/src/"
+    for prefix in arxiv_prefix, alex_prefix:
+        if id.startswith(prefix):   
+            return id[len(prefix):] 
+    return id

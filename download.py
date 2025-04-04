@@ -28,13 +28,15 @@ def search_arxiv(query="all:'neural architecture search'", max_results=2, start=
     if num_papers == 0:
         raise ValueError("Empty feed.")
     
+    print(feed.entries[0].keys())
     return [ 
             {
             "title": entry.title,
             "authors":  ";".join([author["name"] for author in entry.authors]),
             "id": entry.id,
              "published": entry.published,
-             "summary": entry.summary
+             "summary": entry.summary,
+             "doi": entry.doi
              }
             for entry in feed.entries
     ]
