@@ -27,16 +27,14 @@ def search_arxiv(query="all:'neural architecture search'", max_results=2, start=
     num_papers = len(feed.entries)
     if num_papers == 0:
         raise ValueError("Empty feed.")
-    
-    print(feed.entries[0].keys())
+
     return [ 
             {
             "title": entry.title,
             "authors":  ";".join([author["name"] for author in entry.authors]),
             "id": entry.id,
              "published": entry.published,
-             "summary": entry.summary,
-             "doi": entry.doi
+             "summary": entry.summary
              }
             for entry in feed.entries
     ]
@@ -59,7 +57,6 @@ def main(config_file):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         
-    start = 0
     while start < end:
         for _ in range(trials):
             try:    

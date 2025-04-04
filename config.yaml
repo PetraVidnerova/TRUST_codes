@@ -1,17 +1,18 @@
 download:
   query: "all:'neural architecture search'"
-  batch_size: 100
+  batch_size: 1000
   sleep: 120
-  output_dir: "./data"
+  output_dir: "./newdata"
   pdf_dir: "./data/pdf"
-  start: 0
-  end: 2000
+  start: 1000
+  end: 10000
 
 alex:
   output_dir: "./data"
   id_table: "id2alex.csv"
   references_file: "references.txt"
   citations_file: "citations.txt"
+  citation_graph_file: "citation_graph.txt"
 
 process:
   forbidden_keyword: "neural architecture search"
