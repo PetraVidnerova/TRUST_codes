@@ -8,7 +8,7 @@ download:
   end: 10000
 
 files:
-  data_dir: "./newdata"
+  data_dir: "./data"
   info_filename: "info.csv"
   
 alex:
@@ -36,7 +36,6 @@ process:
     - "surrogate models"
   input_dir: "./newdata"
   output_dir: "./newdata/"
-  output_file: "keywords.txt"
   
 
 

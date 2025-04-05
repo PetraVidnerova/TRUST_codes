@@ -3,7 +3,7 @@ import yaml
 
 #INFO_FILES = [f"{start}_{start+batchsize}.csv" for start in range(0, 2000, 100)]
 #EYWORD_FILES = [f"keywords_{start}_{start+100}.csv" for start in range(0, 2000, 100)]
-#KEYWORD_FILE = "keywords.txt"
+KEYWORD_FILE = "keywords.txt"
 
 def info_files(start, end, batchsize):
     return [f"{start}_{start+batchsize}.csv" for start in range(start, end, batchsize)]
