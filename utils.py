@@ -77,8 +77,12 @@ def read_refs(filename):
     with open(filename, "r") as f:
         for line in f:
             id_, fields = line.split(" : ")
-            fields = [field.strip() for field in fields.split(",")]
-            refs[id_] = fields
+            fields = fields.strip()
+            if not fields:
+                refs[id_] = []
+            else:
+                fields = [field.strip() for field in fields.split(",")]
+                refs[id_] = fields
     return refs
     
 def clean_id(id):

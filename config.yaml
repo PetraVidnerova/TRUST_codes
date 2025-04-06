@@ -1,18 +1,17 @@
+files:
+  data_dir: "./data"
+  pdf_dir: "./data/pdf" 
+  info_filename: "info.csv"
+
 download:
   query: "all:'neural architecture search'"
   batch_size: 1000
   sleep: 120
-  output_dir: "./newdata"
-  pdf_dir: "./data/pdf"
   start: 0
   end: 10000
 
-files:
-  data_dir: "./data"
-  info_filename: "info.csv"
   
 alex:
-  output_dir: "./newdata"
   id_table: "id2alex.csv"
   references_file: "references.txt"
   citations_file: "citations.txt"
